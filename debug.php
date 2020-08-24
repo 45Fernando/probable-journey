@@ -24,7 +24,7 @@
         $ubicacion ="";
         if(isset($file) && $file["error"] == 0){
             $allowed = array("pdf" => "application/pdf");
-            $filename = $file["name"]; // devuelve el nombre con la extesion
+            $filename = $file["name"]; 
             $filetype = $file["type"];
             $filesize = $file["size"];
 
@@ -37,10 +37,10 @@
             if($filesize > $maxsize) die("Error: El archivo tiene un tamaño muy grande");
         
             if(in_array($filetype, $allowed)){
-                //$nombreArchivo= rand().".pdf";
+                //$nombreArchivo= rand().".pdf"; Se borro esta linea de codigo ya que no era usada y realizaba lo mismo que la linea siguiente
                 $nuevoNombre = rand().".pdf";
                 move_uploaded_file($file["tmp_name"],  $nuevoNombre);
-                //echo "Archivo enviado exitosamente";
+                echo "Archivo enviado exitosamente";
                 $ubicacion = $nuevoNombre;
             } else{
                 echo "Error: Hubo un problema al subir el archivo, intentar nuevamente"; 
@@ -53,6 +53,7 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //agregarTrabajo($_POST["nombre"],$_POST["descripcion"],$_POST["estado"],subirArchivo($_POST["archivo"]));
+        //Se estaba utilizando $_POST para acceder al archivo, se debe utilizar $_FILES
         agregarTrabajo($_POST["nombre"],$_POST["descripcion"],$_POST["estado"],$_FILES["archivo"]);
     }
 
@@ -84,14 +85,14 @@
             <!--nombre del trabajo -->
             <div class="form-group">
                 <label>Nombre del artículo</label>
-                <!-- <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Nombre" required> -->
+                <!-- <input name="nombre" type="text" class="form-control" placeholder="Nombre" required> -->
+                <!-- Le agregue id al input-->
                 <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Nombre" required>
             </div>
             <!--descripcion--> 
             <div class="form-group">
                 <label>Breve descripción del artículo</label>
-                <!--<input id="ddescripcion" name="descripcion" type="text" class="form-control" placeholder="Descripción" maxlength="200" required  aria-describedby="ddescripcion"> -->
-                <input id="descripcion" name="descripcion" type="text" class="form-control" placeholder="Descripción" maxlength="200" required  aria-describedby="descripcionLong">
+                <input id="ddescripcion" name="descripcion" type="text" class="form-control" placeholder="Descripción" maxlength="200" required  aria-describedby="descripcionLong">
                 <small id="descripcionLong" class="text-muted">  long. máxima: 200 caracteres </small>
             </div>
           
@@ -99,8 +100,7 @@
 
             <div class="form-group">
                 <label>Archivo</label>
-                <!-- <input name="archivo" id="fileSelect" type="file" class="form-control" placeholder="Archivo" required> -->
-                <input name="archivo" id="archivo" type="file" class="form-control" placeholder="Archivo" required>
+                <input name="archivo" id="fileSelect" type="file" class="form-control" placeholder="Archivo" required>
                 <span class="help-block"> Solo se aceptarán pdf, tamaño máximo 25MB</span>
            </div>
             
